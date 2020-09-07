@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Simple word count web component</title>
+</head>
+<body>
+    <h1>ux-textarea</h1>
+    <textarea is=ux-textarea id="textarea">Rasmus</textarea>
+    <br>
+    <button onclick="getElementById('textarea').browseHistory(-1)">Undo</button>
+    <button onclick="getElementById('textarea').browseHistory(1)">Redo</button>
+
+    <script src="main.js"></script>
+</body>
+</html>
