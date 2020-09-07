@@ -24,6 +24,8 @@ class UxTextarea extends HTMLTextAreaElement {
             this.currentPositionInHistory = historyTarget;
             this.value = arr[historyTarget];
             this.onchange = () => {
+                this.currentPositionInHistory = 0;
+                this.valueHistory = new Set([arr.splice(0, historyTarget)]);
                 this.frequentRecording = setInterval(this.addToHistory, 2000);
             }
         }
