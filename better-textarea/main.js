@@ -4,14 +4,13 @@ class UxTextarea extends HTMLTextAreaElement {
         this.initialValue = this.getValue();
         this.value = this.initialValue;
         this.valueHistory = new Set([this.initialValue]);
-        this.currentPositionInHistory = 0;
+        this.currentPositionInHistory = null;
 
         this.historyRecording = () => this.addToHistory();
         this.frequentRecording = setInterval(this.historyRecording, 2000);
     }
     addToHistory() {
         this.valueHistory.add(this.getValue());
-        console.log(this.valueHistory);
     }
     getValue() {
         return this.value.trim();
@@ -19,13 +18,14 @@ class UxTextarea extends HTMLTextAreaElement {
     browseHistory(steps = 0) {
         clearInterval(this.frequentRecording);
         let arr = Array.from(this.valueHistory),
-            historyTarget = (this.currentPositionInHistory ? this.currentPositionInHistory : arr.length - 1) + steps;
+            historyTarget = (typeof this.currentPositionInHistory == 'number' ? this.currentPositionInHistory : arr.length - 1) + steps;
         if (arr[historyTarget]) {
             this.currentPositionInHistory = historyTarget;
             this.value = arr[historyTarget];
             this.onchange = () => {
-                this.currentPositionInHistory = 0;
-                this.valueHistory = new Set([arr.splice(0, historyTarget)]);
+                this.currentPositionInHistory = null;
+                this.valueHistory = new Set(...[arr.splice(0, historyTarget + 1)]);
+                this.addToHistory();
                 this.frequentRecording = setInterval(this.addToHistory, 2000);
             }
         }
